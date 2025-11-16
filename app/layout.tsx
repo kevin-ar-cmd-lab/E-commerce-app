@@ -1,5 +1,5 @@
 // app/layout.tsx
-import './globals.css';
+import '../styles/globals.css';
 import { ReactNode } from 'react';
 import { CartProvider, UserProvider, ProductProvider, ThemeProvider } from '@/context';
 import { Header } from '@/components/header';
