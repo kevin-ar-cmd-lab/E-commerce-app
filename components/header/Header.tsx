@@ -1,22 +1,37 @@
+"use client";
+
 import { FC } from "react";
 import { MobileMenu } from "./MobileMenu";
 
 export const Header: FC = () => (
-  <header className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
-    
-    {/* Mobile Header — full width */}
+  <header
+    className="
+      w-full
+      fixed
+      top-0
+      left-0
+      z-50
+      bg-transparent
+      shadow-none
+      px-2
+      py-1
+    "
+  >
+
+    {/* Mobile Header */}
     <div className="md:hidden w-full">
       <MobileMenu />
     </div>
 
-    {/* Desktop Header — placeholder (expand later) */}
-    <div className="hidden md:flex max-w-7xl mx-auto w-full px-4 py-3 justify-between items-center">
-      {/* Desktop navigation can be added here */}
-      <h1 className="text-xl font-bold">Ecommerce App</h1>
+    {/* Desktop Header (hidden for now, expands later) */}
+    <div className="hidden md:flex max-w-7xl mx-auto w-full px-4 py-2 justify-between items-center">
+      <h1 className="text-xl font-bold">Jumatech</h1>
       <div className="flex gap-4">
-        {/* Icons or links */}
+        {/* Desktop icons/links go here */}
       </div>
     </div>
 
   </header>
 );
+
+export default Header;
