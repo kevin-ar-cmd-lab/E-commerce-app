@@ -1,35 +1,27 @@
 "use client";
-
 import { FC, useState } from "react";
 import Link from "next/link";
-import {
-  ShoppingCart,
-  Search,
-  User,
-  Menu,
-  X,
-} from "lucide-react";
+import { ShoppingCart, Search, User, Menu, X } from "lucide-react";
 
 export const MobileMenu: FC = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
-
-      {/* Mobile Top Bar */}
+    <div className="md:hidden p-4 bg-white shadow-md">
+      {/* Top Bar: Hamburger left, Title right */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Ecommerce App</h1>
-
         <button
           onClick={() => setOpen(!open)}
           className="p-2 border rounded"
         >
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
+
+        <h1 className="text-2xl font-bold ml-auto">Ecommerce App</h1>
       </div>
 
-      {/* Icons under title */}
-      <div className="flex items-center gap-4 mt-3">
+      {/* Icons under title, aligned far right */}
+      <div className="flex items-center gap-4 mt-3 justify-end">
         <Search className="w-5 h-5" />
         <ShoppingCart className="w-5 h-5" />
         <User className="w-5 h-5" />
