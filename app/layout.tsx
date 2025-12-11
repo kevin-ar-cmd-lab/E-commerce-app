@@ -1,32 +1,19 @@
-// app/layout.tsx
-import type { Metadata } from 'next';
-import '../styles/globals.css';
+'use client';
 
-import { ReactNode } from 'react';
-import { CartProvider, UserProvider, ProductProvider, ThemeProvider } from '@/context';
+import { AppProviders } from '@/context/providers';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import '../styles/globals.css';
 
-export const metadata: Metadata = {
-  title: 'YourBrand Ecommerce',
-  description: 'Professional Next.js Ecommerce App',
-};
-
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-white text-gray-900">
-        <ThemeProvider>
-          <UserProvider>
-            <CartProvider>
-              <ProductProvider>
-                <Header />
-                <main className="min-h-screen">{children}</main>
-                <Footer />
-              </ProductProvider>
-            </CartProvider>
-          </UserProvider>
-        </ThemeProvider>
+    <html lang="en">
+      <body>
+        <AppProviders>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </AppProviders>
       </body>
     </html>
   );
