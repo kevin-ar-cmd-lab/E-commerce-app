@@ -7,7 +7,7 @@ export const MobileMenu: FC = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden w-full px-3 pt-2">
+    <div className="md:hidden w-full px-4 py-3">
 
       {/* Top Row: Hamburger + Title + Icons */}
       <div className="flex items-center justify-between w-full">
@@ -41,7 +41,7 @@ export const MobileMenu: FC = () => {
           <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
         </div>
       )}
+
     </div>
   );
 };
-

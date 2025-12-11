@@ -12,20 +12,8 @@ export const Header: FC = () => (
   >
 
     {/* ================= MOBILE ================= */}
-    <div className="flex md:hidden items-center justify-between px-4 py-2 w-full">
-
-      {/* Left: Hamburger + Brand */}
-      <div className="flex items-center gap-3">
-        <MobileMenu />
-        <span className="text-lg font-bold">Jumatech</span>
-      </div>
-
-      {/* Right: Icons */}
-      <div className="flex items-center gap-4">
-        <ShoppingCart className="w-6 h-6" />
-        <User className="w-6 h-6" />
-      </div>
-
+    <div className="md:hidden w-full">
+      <MobileMenu />
     </div>
 
     {/* ================= DESKTOP ================= */}
@@ -34,7 +22,10 @@ export const Header: FC = () => (
       <span className="text-xl font-bold">Jumatech</span>
 
       <nav className="flex gap-6">
-        {/* Add desktop nav links here */}
+        <a href="/" className="">Home</a>
+        <a href="/shop" className="">Shop</a>
+        <a href="/about" className="">About</a>
+        <a href="/contact" className="">Contact</a>
       </nav>
 
       <div className="flex gap-4">
