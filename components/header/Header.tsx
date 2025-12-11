@@ -1,8 +1,10 @@
-import { FC } from "react";
-import { MobileMenu } from "./MobileMenu";
-import { ShoppingCart, User } from "lucide-react";
+"use client";
 
-export const Header: FC = () => (
+import Link from "next/link";
+import { ShoppingCart, User } from "lucide-react";
+import { MobileMenu } from "./MobileMenu";
+
+export const Header = () => (
   <header
     className="
       w-full fixed top-0 left-0 z-50
@@ -10,7 +12,6 @@ export const Header: FC = () => (
       border-b border-white/10
     "
   >
-
     {/* ================= MOBILE ================= */}
     <div className="md:hidden w-full">
       <MobileMenu />
@@ -18,22 +19,28 @@ export const Header: FC = () => (
 
     {/* ================= DESKTOP ================= */}
     <div className="hidden md:flex max-w-7xl mx-auto w-full items-center justify-between px-6 py-3">
+      {/* Brand */}
+      <Link href="/" className="text-xl font-bold">
+        Jumatech
+      </Link>
 
-      <span className="text-xl font-bold">Jumatech</span>
-
+      {/* Navigation Links */}
       <nav className="flex gap-6">
-        <a href="/" className="">Home</a>
-        <a href="/shop" className="">Shop</a>
-        <a href="/about" className="">About</a>
-        <a href="/contact" className="">Contact</a>
+        <Link href="/">Home</Link>
+        <Link href="/shop">Shop</Link>
+        <Link href="/about">About</Link>
+        <Link href="/contact">Contact</Link>
       </nav>
 
+      {/* Right Icons */}
       <div className="flex gap-4">
-        <ShoppingCart className="w-6 h-6" />
-        <User className="w-6 h-6" />
+        <Link href="/cart">
+          <ShoppingCart className="w-6 h-6 cursor-pointer hover:text-blue-600 transition" />
+        </Link>
+        <Link href="/profile">
+          <User className="w-6 h-6 cursor-pointer hover:text-blue-600 transition" />
+        </Link>
       </div>
-
     </div>
-
   </header>
 );
