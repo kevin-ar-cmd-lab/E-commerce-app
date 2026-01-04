@@ -7,7 +7,9 @@ import {
 } from "@/components/profile";
 
 export default async function ProfilePage() {
-  const supabaseAccessToken = cookies().get("sb-access-token")?.value;
+  // ✅ cookies() is async in Next.js 14+
+  const cookieStore = await cookies();
+  const supabaseAccessToken = cookieStore.get("sb-access-token")?.value;
 
   if (!supabaseAccessToken) {
     return (
