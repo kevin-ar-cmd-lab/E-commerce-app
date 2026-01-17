@@ -461,13 +461,7 @@ export default function HomePage() {
                   </a>
                 </li>
               </ul>
-            </div>
           </div>
-
-          <div className="border-t border-gray-200 pt-8 text-center text-gray-400 text-sm">
-            &copy; 2025 Juma Tech Solutions. All rights reserved.
-          </div>
-        </div>
       </footer>
 
       {/* Toast Notification */}
