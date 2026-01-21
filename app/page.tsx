@@ -374,106 +374,87 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer — note: layout/Footer will render global footer; keep page-level contact summary if desired */}
-      <footer className="bg-white border-t border-gray-200 pt-12 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div className="col-span-1">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-                  J
-                </div>
-                <span className="font-bold text-xl text-gray-900">
-                  Juma<span className="text-blue-600">Tech</span>
-                </span>
-              </div>
-              <p className="text-gray-500 text-sm mb-4">
-                Empowering your digital journey with the best tools and gadgets
-                available in Kenya.
-              </p>
-              <div className="flex space-x-4">
-                {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                  <a
-                    key={i}
-                    href="#"
-                    className="text-gray-400 hover:text-blue-600 transition-colors"
-                  >
-                    <Icon size={20} />
-                  </a>
-                ))}
-              </div>
-            </div>
+    {/* Footer */}
+<footer className="bg-white border-t border-gray-200 pt-12 pb-8">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
 
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-                Shop
-              </h3>
-              <ul className="space-y-2 text-sm text-gray-500">
-                <li>
-                  <a href="#" className="hover:text-blue-600">
-                    Laptops
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-600">
-                    Phones
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-600">
-                    Accessories
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div id="contact">
-              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-                Contact Developer
-              </h3>
-              <ul className="space-y-3 text-sm text-gray-500">
-                <li className="flex items-center gap-3">
-                  <User size={16} className="text-blue-600" />
-                  <span>Kevin Juma (Dev)</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Phone size={16} className="text-blue-600" />
-                  <a href="tel:+254113094610" className="hover:text-blue-600">
-                    +254 113 094 610
-                  </a>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Mail size={16} className="text-blue-600" />
-                  <a
-                    href="mailto:otienokevino100090@gmail.com"
-                    className="hover:text-blue-600 break-all"
-                  >
-                    otienokevino100090@gmail.com
-                  </a>
-                </li>
-                <li className="flex items-center gap-3">
-                  <MessageCircle size={16} className="text-green-500" />
-                  <a
-                    href="https://wa.me/254113094610"
-                    className="hover:text-green-600"
-                  >
-                    Chat on WhatsApp
-                  </a>
-                </li>
-              </ul>
+      {/* Brand */}
+      <div className="col-span-1">
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+            J
           </div>
-      </footer>
-
-      {/* Toast Notification */}
-      <div
-        className={`fixed bottom-5 right-5 px-4 py-3 rounded-lg shadow-lg text-white text-sm bg-green-600 transition-all duration-300 ${
-          showToast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5 pointer-events-none"
-        }`}
-        role="status"
-        aria-live="polite"
-      >
-        Item added to cart ({cartCount})
+          <span className="font-bold text-xl text-gray-900">
+            Juma<span className="text-blue-600">Tech</span>
+          </span>
+        </div>
+        <p className="text-gray-500 text-sm mb-4">
+          Empowering your digital journey with the best tools and gadgets
+          available in Kenya.
+        </p>
+        <div className="flex space-x-4">
+          {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+            <a
+              key={i}
+              href="#"
+              className="text-gray-400 hover:text-blue-600 transition-colors"
+            >
+              <Icon size={20} />
+            </a>
+          ))}
+        </div>
       </div>
+
+      {/* Shop */}
+      <div>
+        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+          Shop
+        </h3>
+        <ul className="space-y-2 text-sm text-gray-500">
+          <li><a href="#" className="hover:text-blue-600">Laptops</a></li>
+          <li><a href="#" className="hover:text-blue-600">Phones</a></li>
+          <li><a href="#" className="hover:text-blue-600">Accessories</a></li>
+        </ul>
+      </div>
+
+      {/* Contact */}
+      <div id="contact">
+        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+          Contact Developer
+        </h3>
+        <ul className="space-y-3 text-sm text-gray-500">
+          <li className="flex items-center gap-3">
+            <User size={16} className="text-blue-600" />
+            <span>Kevin Juma (Dev)</span>
+          </li>
+          <li className="flex items-center gap-3">
+            <Phone size={16} className="text-blue-600" />
+            <a href="tel:+254113094610" className="hover:text-blue-600">
+              +254 113 094 610
+            </a>
+          </li>
+          <li className="flex items-center gap-3">
+            <Mail size={16} className="text-blue-600" />
+            <a
+              href="mailto:otienokevino100090@gmail.com"
+              className="hover:text-blue-600 break-all"
+            >
+              otienokevino100090@gmail.com
+            </a>
+          </li>
+          <li className="flex items-center gap-3">
+            <MessageCircle size={16} className="text-green-500" />
+            <a
+              href="https://wa.me/254113094610"
+              className="hover:text-green-600"
+            >
+              Chat on WhatsApp
+            </a>
+          </li>
+        </ul>
+      </div>
+
     </div>
-  );
-}
+  </div>
+</footer>
