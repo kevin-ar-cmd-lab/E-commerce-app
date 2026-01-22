@@ -454,7 +454,6 @@ export default function HomePage() {
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 </footer>
