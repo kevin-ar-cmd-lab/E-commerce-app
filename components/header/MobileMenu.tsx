@@ -11,7 +11,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useUser } from "@supabase/auth-helpers-react";
-import { supabase } from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
 export const MobileMenu = () => {
