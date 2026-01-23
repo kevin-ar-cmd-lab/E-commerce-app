@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 export default function CheckoutPage() {
   const { user, loading } = useAuth();
-  const { cartItems } = useCart();
+  const { items: cartItems } = useCart();
   const router = useRouter();
 
   useEffect(() => {
