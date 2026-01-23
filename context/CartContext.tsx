@@ -2,101 +2,97 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { useAuth } from "@/context/AuthContext";
+
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
 
 export interface CartItem {
   id: string;
-  user_id: string;
-  product_id: string;
+  product: Product;
   quantity: number;
-  price: number;
-  created_at?: string;
 }
 
 interface CartContextProps {
-  cartItems: CartItem[];
-  loading: boolean;
-  fetchCart: () => Promise<void>;
-  addToCart: (productId: string, price: number, qty?: number) => Promise<void>;
-  removeFromCart: (itemId: string) => Promise<void>;
-  clearCart: () => Promise<void>;
+  items: CartItem[];
+  addItem: (product: Product) => void;
+  removeItem: (id: string) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const [items, setItems] = useState<CartItem[]>([]);
 
-  const fetchCart = async () => {
-    setLoading(true);
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+  /* ---------- Load cart on login ---------- */
+  useEffect(() => {
     if (!user) {
-      setCartItems([]);
-      setLoading(false);
+      setItems([]);
       return;
     }
 
+    const loadCart = async () => {
+      const { data } = await supabase
+        .from("cart_items")
+        .select("id, quantity, products(id, name, price)")
+        .eq("user_id", user.id);
+
+      if (data) {
+        setItems(
+          data.map((row: any) => ({
+            id: row.id,
+            quantity: row.quantity,
+            product: row.products,
+          }))
+        );
+      }
+    };
+
+    loadCart();
+  }, [user]);
+
+  /* ---------- Add item ---------- */
+  const addItem = async (product: Product) => {
+    if (!user) return;
+
     const { data, error } = await supabase
       .from("cart_items")
-      .select("*")
-      .eq("user_id", user.id);
+      .insert({
+        user_id: user.id,
+        product_id: product.id,
+        quantity: 1,
+      })
+      .select("id")
+      .single();
 
-    if (!error) setCartItems(data ?? []);
-    setLoading(false);
+    if (!error && data) {
+      setItems((prev) => [
+        ...prev,
+        { id: data.id, product, quantity: 1 },
+      ]);
+    }
   };
 
-  const addToCart = async (productId: string, price: number, qty = 1) => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) return;
-
-    await supabase.from("cart_items").insert({
-      user_id: user.id,
-      product_id: productId,
-      quantity: qty,
-      price,
-    });
-
-    await fetchCart();
+  /* ---------- Remove item ---------- */
+  const removeItem = async (id: string) => {
+    await supabase.from("cart_items").delete().eq("id", id);
+    setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
-  const removeFromCart = async (itemId: string) => {
-    await supabase.from("cart_items").delete().eq("id", itemId);
-    await fetchCart();
-  };
-
+  /* ---------- Clear cart ---------- */
   const clearCart = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
     if (!user) return;
-
     await supabase.from("cart_items").delete().eq("user_id", user.id);
-    setCartItems([]);
+    setItems([]);
   };
-
-  useEffect(() => {
-    fetchCart();
-  }, []);
 
   return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        loading,
-        fetchCart,
-        addToCart,
-        removeFromCart,
-        clearCart,
-      }}
-    >
+    <CartContext.Provider value={{ items, addItem, removeItem, clearCart }}>
       {children}
     </CartContext.Provider>
   );
