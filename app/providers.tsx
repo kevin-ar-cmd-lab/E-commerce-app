@@ -11,9 +11,7 @@ export default function Providers({
 }) {
   return (
     <AuthProvider>
-      <CartProvider>
-        {children}
-      </CartProvider>
+      <CartProvider>{children}</CartProvider>
     </AuthProvider>
   );
 }
