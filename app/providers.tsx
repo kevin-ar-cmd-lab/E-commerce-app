@@ -1,16 +1,19 @@
 "use client";
 
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import { supabase } from "@/lib/supabase/client";
+import { ReactNode } from "react";
+import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 
 export default function Providers({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <SessionContextProvider supabaseClient={supabase}>
-      {children}
-    </SessionContextProvider>
+    <AuthProvider>
+      <CartProvider>
+        {children}
+      </CartProvider>
+    </AuthProvider>
   );
 }
