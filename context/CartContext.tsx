@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/context/AuthContext";
 
@@ -18,9 +24,9 @@ export interface CartItem {
 
 interface CartContextProps {
   items: CartItem[];
-  addItem: (product: Product) => void;
-  removeItem: (id: string) => void;
-  clearCart: () => void;
+  addItem: (product: Product) => Promise<void>;
+  removeItem: (id: string) => Promise<void>;
+  clearCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
@@ -37,12 +43,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const loadCart = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("cart_items")
         .select("id, quantity, products(id, name, price)")
         .eq("user_id", user.id);
 
-      if (data) {
+      if (!error && data) {
         setItems(
           data.map((row: any) => ({
             id: row.id,
@@ -92,7 +98,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, clearCart }}>
+    <CartContext.Provider
+      value={{ items, addItem, removeItem, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
@@ -100,6 +108,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 export const useCart = () => {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used within CartProvider");
+  if (!ctx) {
+    throw new Error("useCart must be used within CartProvider");
+  }
   return ctx;
 };

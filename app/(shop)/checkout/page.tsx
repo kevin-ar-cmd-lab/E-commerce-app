@@ -25,13 +25,13 @@ export default function CheckoutPage() {
   }
 
   const total = items.reduce(
-    (sum, item) => sum + item.quantity * item.price,
+    (sum, item) => sum + item.quantity * item.product.price,
     0
   );
 
   const handleCheckout = async () => {
-    // TODO: integrate payment + Supabase order creation
-    clearCart();
+    // TODO: integrate payment + order persistence
+    await clearCart();
     router.push("/success");
   };
 
@@ -46,13 +46,16 @@ export default function CheckoutPage() {
             className="flex justify-between border-b pb-2"
           >
             <div>
-              <p className="font-medium">{item.name}</p>
+              <p className="font-medium">
+                {item.product.name}
+              </p>
               <p className="text-sm text-gray-500">
                 Qty: {item.quantity}
               </p>
             </div>
             <p className="font-semibold">
-              KES {(item.price * item.quantity).toLocaleString()}
+              KES{" "}
+              {(item.product.price * item.quantity).toLocaleString()}
             </p>
           </div>
         ))}
