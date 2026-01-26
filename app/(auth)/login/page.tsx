@@ -73,13 +73,13 @@ export default function LoginPage() {
 
       <div className="text-sm text-center space-y-2">
         <p>
-          <Link href="/auth/reset-password" className="text-blue-600">
+          <Link href="/reset-password" className="text-blue-600">
             Forgot password?
           </Link>
         </p>
         <p>
           Don’t have an account?{" "}
-          <Link href="/auth/register" className="text-blue-600">
+          <Link href="/register" className="text-blue-600">
             Create one
           </Link>
         </p>
