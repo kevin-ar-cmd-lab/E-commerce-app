@@ -13,9 +13,14 @@ export const MobileMenu = () => {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user ?? null);
-    });
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user ?? null);
+    };
+
+    fetchUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {

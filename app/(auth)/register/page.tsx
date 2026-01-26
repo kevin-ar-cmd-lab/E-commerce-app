@@ -1,51 +1,79 @@
 "use client";
 
+import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignupPage() {
-  const { signUp } = useAuth();
-  const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignup = async () => {
-    try {
-      await signUp(email, password, username);
-      router.push("/");
-    } catch (e: any) {
-      alert(e.message);
+    if (password !== confirmPassword) {
+      return alert("Passwords do not match");
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      if (error.message.includes("already registered")) {
+        return alert("Account already exists. Please log in.");
+      }
+      return alert(error.message);
+    }
+
+    if (data.user) {
+      await supabase.from("profiles").insert({
+        id: data.user.id,
+        full_name: fullName,
+        email,
+      });
     }
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-20 space-y-4">
-      <h1 className="text-xl font-bold">Create Account</h1>
+    <>
+      <h1>Create Account</h1>
+
+      <input placeholder="Full Name" onChange={(e) => setFullName(e.target.value)} />
+      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+
       <input
-        className="w-full border p-2"
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        className="w-full border p-2"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        className="w-full border p-2"
+        type={showPassword ? "text" : "password"}
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
+
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="Confirm Password"
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      />
+
+      <label>
+        <input type="checkbox" onChange={() => setShowPassword(!showPassword)} />
+        Show password
+      </label>
+
+      <button onClick={handleSignup}>Sign up</button>
+
       <button
-        onClick={handleSignup}
-        className="w-full bg-green-600 text-white py-2"
+        onClick={() =>
+          supabase.auth.signInWithOAuth({ provider: "google" })
+        }
       >
-        Sign Up
+        Sign up with Google
       </button>
-    </div>
+
+      <p>
+        Already have an account? <Link href="/auth/login">Sign in</Link>
+      </p>
+    </>
   );
 }
