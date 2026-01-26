@@ -107,7 +107,7 @@ export default function LoginPage() {
 
       <p>
         Don’t have an account?{" "}
-        <a href="/signup" className="text-blue-600 underline">
+        <a href="/register" className="text-blue-600 underline">
           Sign Up
         </a>
       </p>
