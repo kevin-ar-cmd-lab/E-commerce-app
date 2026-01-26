@@ -3,14 +3,17 @@
 import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const registered = searchParams.get("registered");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -20,70 +23,50 @@ export default function LoginPage() {
       password,
     });
 
-    setLoading(false);
-
     if (error) {
-      return alert(error.message);
+      setLoading(false);
+      alert("Invalid credentials or account does not exist");
+      return;
     }
 
+    setLoading(false);
+
+    // 🔑 Redirect to dashboard on successful login
     router.push("/dashboard");
   };
 
   return (
-    <>
-      <h1 className="text-xl font-semibold mb-4">Sign In</h1>
+    <div className="auth-card">
+      <h1>Sign In</h1>
+
+      {registered && (
+        <p className="text-green-600 text-sm">
+          Account created successfully. Please sign in.
+        </p>
+      )}
+
+      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
 
       <input
-        className="w-full mb-3 px-4 py-2 border rounded-lg"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <input
-        className="w-full mb-3 px-4 py-2 border rounded-lg"
         type={showPassword ? "text" : "password"}
         placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
       />
 
-      <label className="flex items-center gap-2 text-sm mb-4">
-        <input
-          type="checkbox"
-          onChange={() => setShowPassword(!showPassword)}
-        />
+      <label>
+        <input type="checkbox" onChange={() => setShowPassword(!showPassword)} />
         Show password
       </label>
 
-      <button
-        onClick={handleLogin}
-        disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-lg mb-3 disabled:opacity-50"
-      >
+      <button onClick={handleLogin} disabled={loading}>
         {loading ? "Signing in..." : "Sign in"}
       </button>
 
-      <button
-        onClick={() =>
-          supabase.auth.signInWithOAuth({ provider: "google" })
-        }
-        className="w-full border py-2 rounded-lg mb-4"
-      >
-        Continue with Google
-      </button>
+      <Link href="/auth/reset-password">Forgot password?</Link>
 
-      <div className="text-sm text-center space-y-2">
-        <p>
-          <Link href="/reset-password" className="text-blue-600">
-            Forgot password?
-          </Link>
-        </p>
-        <p>
-          Don’t have an account?{" "}
-          <Link href="/register" className="text-blue-600">
-            Create one
-          </Link>
-        </p>
-      </div>
-    </>
+      <p>
+        Don’t have an account? <Link href="/auth/register">Create one</Link>
+      </p>
+    </div>
   );
 }
