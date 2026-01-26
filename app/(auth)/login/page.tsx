@@ -1,22 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  // Sign in with email/password
   const handleLogin = async () => {
-    setError("");
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({
+
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -24,93 +23,67 @@ export default function LoginPage() {
     setLoading(false);
 
     if (error) {
-      setError("Invalid email or password. If you don't have an account, please sign up.");
-      return;
+      return alert(error.message);
     }
 
-    if (data?.user) {
-      router.push("/dashboard"); // Redirect after successful login
-    }
-  };
-
-  // OAuth login (Google)
-  const handleOAuthLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: window.location.origin },
-    });
-
-    if (error) setError("OAuth login failed. Please try again.");
-  };
-
-  // Forgot password
-  const handleForgotPassword = async () => {
-    if (!email) return setError("Please enter your email first.");
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/update-password`,
-    });
-    if (error) setError(error.message);
-    else setError("Password reset link sent to your email.");
+    router.push("/dashboard");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-6">Login</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+    <>
+      <h1 className="text-xl font-semibold mb-4">Sign In</h1>
 
       <input
-        type="email"
+        className="w-full mb-3 px-4 py-2 border rounded-lg"
         placeholder="Email"
-        value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="mb-4 p-2 border rounded w-full max-w-sm"
       />
 
-      <div className="relative w-full max-w-sm mb-4">
+      <input
+        className="w-full mb-3 px-4 py-2 border rounded-lg"
+        type={showPassword ? "text" : "password"}
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <label className="flex items-center gap-2 text-sm mb-4">
         <input
-          type={showPassword ? "text" : "password"}
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="p-2 border rounded w-full"
+          type="checkbox"
+          onChange={() => setShowPassword(!showPassword)}
         />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-2 top-2 text-sm text-gray-500"
-        >
-          {showPassword ? "Hide" : "Show"}
-        </button>
-      </div>
+        Show password
+      </label>
 
       <button
         onClick={handleLogin}
         disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full max-w-sm mb-4"
+        className="w-full bg-blue-600 text-white py-2 rounded-lg mb-3 disabled:opacity-50"
       >
-        {loading ? "Logging in..." : "Login"}
+        {loading ? "Signing in..." : "Sign in"}
       </button>
 
       <button
-        onClick={handleOAuthLogin}
-        className="bg-red-500 text-white px-4 py-2 rounded w-full max-w-sm mb-2"
+        onClick={() =>
+          supabase.auth.signInWithOAuth({ provider: "google" })
+        }
+        className="w-full border py-2 rounded-lg mb-4"
       >
-        Login with Google
+        Continue with Google
       </button>
 
-      <button
-        onClick={handleForgotPassword}
-        className="text-blue-600 underline mb-4"
-      >
-        Forgot Password?
-      </button>
-
-      <p>
-        Don’t have an account?{" "}
-        <a href="/register" className="text-blue-600 underline">
-          Sign Up
-        </a>
-      </p>
-    </div>
+      <div className="text-sm text-center space-y-2">
+        <p>
+          <Link href="/auth/reset-password" className="text-blue-600">
+            Forgot password?
+          </Link>
+        </p>
+        <p>
+          Don’t have an account?{" "}
+          <Link href="/auth/register" className="text-blue-600">
+            Create one
+          </Link>
+        </p>
+      </div>
+    </>
   );
 }
