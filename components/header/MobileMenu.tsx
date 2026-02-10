@@ -48,7 +48,7 @@ export const MobileMenu = () => {
         </div>
 
         <div className="flex gap-4">
-          <Link href="/search"><Search /></Link>
+          <Link href="/products"><Search /></Link>
           <Link href="/cart"><ShoppingCart /></Link>
           {user ? (
             <button onClick={logout}><LogOut className="text-red-600" /></button>

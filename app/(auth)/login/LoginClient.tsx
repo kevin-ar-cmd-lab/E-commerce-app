@@ -66,11 +66,11 @@ export default function LoginClient() {
         {loading ? "Signing in..." : "Sign in"}
       </button>
 
-      <Link href="/auth/reset-password">Forgot password?</Link>
+      <Link href="/reset-password">Forgot password?</Link>
 
       <p>
         Don’t have an account?{" "}
-        <Link href="/auth/register">Create one</Link>
+        <Link href="/register">Create one</Link>
       </p>
     </div>
   );

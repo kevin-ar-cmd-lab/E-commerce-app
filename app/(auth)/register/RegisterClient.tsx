@@ -45,7 +45,7 @@ export default function RegisterClient() {
     setLoading(false);
 
     // Redirect to login with success flag
-    router.push("/auth/login?registered=true");
+    router.push("/login?registered=true");
   };
 
   return (
@@ -88,7 +88,7 @@ export default function RegisterClient() {
 
       <p>
         Already have an account?{" "}
-        <Link href="/auth/login">Sign in</Link>
+        <Link href="/login">Sign in</Link>
       </p>
     </div>
   );

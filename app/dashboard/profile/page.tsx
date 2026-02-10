@@ -15,7 +15,7 @@ export default async function ProfilePage() {
     return (
       <p className="text-red-500">
         You are not logged in. Please{" "}
-        <a href="/auth/login" className="underline text-blue-600">
+        <a href="/login" className="underline text-blue-600">
           login
         </a>
         .
