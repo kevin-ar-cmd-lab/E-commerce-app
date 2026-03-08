@@ -1,6 +1,6 @@
-import { FC } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { FC } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   id: string;
@@ -9,17 +9,28 @@ interface Props {
   image: string;
 }
 
-export const ProductCard: FC<Props> = ({ id, name, price, image }) => (
-  <Link href={`/products/${id}`} className="border rounded p-2 hover:shadow-lg transition">
-    <Image
-      src={image}
-      alt={name}
-      width={640}
-      height={480}
-      sizes="(max-width: 768px) 100vw, 33vw"
-      className="w-full h-48 object-cover mb-2 rounded"
-    />
-    <h3 className="font-bold">{name}</h3>
-    <p className="text-blue-600 font-semibold">${price.toFixed(2)}</p>
-  </Link>
-);
+export const ProductCard: FC<Props> = ({ id, name, price, image }) => {
+  const formattedPrice = new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    maximumFractionDigits: 0,
+  }).format(price);
+
+  return (
+    <Link
+      href={`/products/${id}`}
+      className="rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] p-3 transition hover:-translate-y-1 hover:shadow-lg hover:shadow-[var(--shadow-color)]/25"
+    >
+      <Image
+        src={image}
+        alt={name}
+        width={800}
+        height={600}
+        sizes="(max-width: 768px) 100vw, 33vw"
+        className="mb-3 h-48 w-full rounded-xl object-cover"
+      />
+      <h3 className="font-bold">{name}</h3>
+      <p className="mt-1 text-sm font-semibold text-[var(--accent)]">{formattedPrice}</p>
+    </Link>
+  );
+};

@@ -45,7 +45,6 @@ export const catalogProducts: CatalogProduct[] = [
     price: 3200,
     description:
       "Compact 20,000mAh powerbank with fast charging for phones and tablets.",
-    image:
-      "https://images.unsplash.com/photo-1585792180666-f7347f490ee2?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/powerbank.svg",
   },
 ];
