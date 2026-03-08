@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { Input } from "./Input";
 import { Button } from "./Button";
 
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 

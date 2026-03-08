@@ -31,35 +31,68 @@ interface CartContextProps {
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
+interface CartProductRow {
+  id: string;
+  name: string;
+  price: number;
+}
+
+interface CartQueryRow {
+  id: string;
+  quantity: number;
+  products: CartProductRow | CartProductRow[] | null;
+}
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const [items, setItems] = useState<CartItem[]>([]);
 
   /* ---------- Load cart on login ---------- */
   useEffect(() => {
-    if (!user) {
-      setItems([]);
-      return;
-    }
+    let isActive = true;
 
-    const loadCart = async () => {
+    const syncCart = async () => {
+      if (!user) {
+        setItems([]);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("cart_items")
         .select("id, quantity, products(id, name, price)")
         .eq("user_id", user.id);
 
-      if (!error && data) {
-        setItems(
-          data.map((row: any) => ({
+      if (!isActive || error || !data) {
+        return;
+      }
+
+      const mappedItems = (data as CartQueryRow[]).flatMap((row) => {
+        const product = Array.isArray(row.products)
+          ? row.products[0]
+          : row.products;
+
+        if (!product) return [];
+
+        return [
+          {
             id: row.id,
             quantity: row.quantity,
-            product: row.products,
-          }))
-        );
-      }
+            product: {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+            },
+          },
+        ];
+      });
+
+      setItems(mappedItems);
     };
 
-    loadCart();
+    void syncCart();
+    return () => {
+      isActive = false;
+    };
   }, [user]);
 
   /* ---------- Add item ---------- */

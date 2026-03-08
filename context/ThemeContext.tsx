@@ -11,13 +11,17 @@ interface ThemeContextProps {
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('light');
+const getInitialTheme = (): Theme => {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
 
-  useEffect(() => {
-    const saved = localStorage.getItem('theme') as Theme;
-    if (saved) setTheme(saved);
-  }, []);
+  const saved = localStorage.getItem('theme');
+  return saved === 'dark' ? 'dark' : 'light';
+};
+
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

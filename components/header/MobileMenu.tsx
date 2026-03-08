@@ -62,7 +62,7 @@ export const MobileMenu = () => {
         <div className="flex flex-col mt-3 space-y-3">
           {user && <span className="text-sm">{user.email}</span>}
           <Link href="/">Home</Link>
-          <Link href="/shop">Shop</Link>
+          <Link href="/products">Shop</Link>
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
           {user && (

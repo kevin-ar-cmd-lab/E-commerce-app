@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import Image from "next/image";
 import {
   Star,
   Truck,
@@ -102,12 +102,6 @@ const TESTIMONIALS = [
 /* -------------------- PAGE -------------------- */
 
 export default function HomePage() {
-  const [cartCount, setCartCount] = useState(0);
-
-  const handleAddToCart = () => {
-    setCartCount((prev) => prev + 1);
-  };
-
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("en-KE", {
       style: "currency",
@@ -145,9 +139,12 @@ export default function HomePage() {
                 key={product.id}
                 className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition"
               >
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
+                  width={800}
+                  height={600}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="h-48 w-full object-cover rounded-lg mb-4"
                 />
 
@@ -166,7 +163,7 @@ export default function HomePage() {
                     {formatCurrency(product.price)}
                   </span>
                   <button
-                    onClick={handleAddToCart}
+                    type="button"
                     className="text-sm bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700"
                   >
                     Add to Cart

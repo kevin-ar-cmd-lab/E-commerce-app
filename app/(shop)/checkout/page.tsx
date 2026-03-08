@@ -30,9 +30,8 @@ export default function CheckoutPage() {
   );
 
   const handleCheckout = async () => {
-    // TODO: integrate payment + order persistence
     await clearCart();
-    router.push("/success");
+    router.push("/order/success");
   };
 
   return (

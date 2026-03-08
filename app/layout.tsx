@@ -1,10 +1,14 @@
-'use client';
+import type { Metadata } from "next";
+import { ReactNode } from "react";
+import "../styles/globals.css";
+import { AppProviders } from "@/context/providers";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
-import { ReactNode } from 'react';
-import '../styles/globals.css';
-import { AppProviders } from '@/context/providers'; // should include AuthProvider
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+export const metadata: Metadata = {
+  title: "JumaTech Shopper",
+  description: "Professional electronics e-commerce storefront.",
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
