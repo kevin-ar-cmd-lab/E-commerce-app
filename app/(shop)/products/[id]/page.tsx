@@ -17,7 +17,7 @@ export default async function ProductDetailsPage({
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-10">
-      <Link href="/products" className="text-sm text-blue-600 hover:underline">
+      <Link href="/products" className="text-sm text-[var(--accent)] hover:underline">
         Back to products
       </Link>
       <div className="mt-4">

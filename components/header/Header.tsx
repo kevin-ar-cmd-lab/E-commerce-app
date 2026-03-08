@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingCart, User, LogOut } from "lucide-react";
+import { Moon, Search, ShoppingCart, Sun, User, LogOut } from "lucide-react";
 import { MobileMenu } from "./MobileMenu";
 import { supabase } from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { useTheme } from "@/context/ThemeContext";
 
 export const Header = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,36 +39,51 @@ export const Header = () => {
   };
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 backdrop-blur-lg bg-white/30 border-b border-white/10">
+    <header className="fixed left-0 top-0 z-50 w-full border-b border-[var(--border-color)] bg-[var(--header-bg)]/90 backdrop-blur-xl">
       <div className="md:hidden w-full">
         <MobileMenu />
       </div>
 
-      <div className="hidden md:flex max-w-7xl mx-auto w-full items-center justify-between px-6 py-3">
-        <Link href="/" className="text-xl font-bold">Jumatech</Link>
+      <div className="hidden w-full items-center justify-between px-6 py-3 md:flex">
+        <Link href="/" className="text-xl font-black tracking-tight">
+          Jumatech
+        </Link>
 
-        <nav className="flex gap-6">
+        <nav className="flex items-center gap-6 text-sm font-medium">
           <Link href="/">Home</Link>
           <Link href="/products">Shop</Link>
+          <Link href="/search">Search</Link>
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link href="/cart">
-            <ShoppingCart className="w-6 h-6 hover:text-blue-600 transition" />
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="rounded-lg border border-[var(--border-color)] bg-[var(--surface)] p-2 hover:bg-[var(--surface-hover)]"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+
+          <Link href="/search" aria-label="Search">
+            <Search className="h-5 w-5 transition hover:text-[var(--accent)]" />
+          </Link>
+
+          <Link href="/cart" aria-label="Cart">
+            <ShoppingCart className="h-5 w-5 transition hover:text-[var(--accent)]" />
           </Link>
 
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="text-sm">{user.email}</span>
-              <button onClick={logout}>
-                <LogOut className="w-5 h-5 text-red-600" />
+              <span className="max-w-40 truncate text-xs">{user.email}</span>
+              <button onClick={logout} aria-label="Logout">
+                <LogOut className="h-5 w-5 text-red-600" />
               </button>
             </div>
           ) : (
-            <Link href="/login">
-              <User className="w-6 h-6 hover:text-blue-600 transition" />
+            <Link href="/login" aria-label="Login">
+              <User className="h-5 w-5 transition hover:text-[var(--accent)]" />
             </Link>
           )}
         </div>
