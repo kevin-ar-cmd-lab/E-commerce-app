@@ -1,28 +1,27 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import { ShieldCheck } from "lucide-react";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        {/* Brand */}
-        <div className="mb-6 text-center">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            Jumatech
-          </Link>
-          <p className="text-sm text-gray-500 mt-1">
-            Secure access to your account
-          </p>
-        </div>
+    <section className="relative border-b border-[var(--border-color)] bg-[var(--surface-muted)]">
+      <div className="mx-auto flex min-h-[80vh] max-w-7xl items-center justify-center px-4 py-14 sm:px-6">
+        <div className="w-full max-w-md rounded-3xl border border-[var(--border-color)] bg-[var(--surface)] p-8 text-[var(--text-color)] shadow-xl shadow-[var(--shadow-color)]/20">
+          {/* Brand */}
+          <div className="mb-6 flex flex-col items-center text-center">
+            <Link href="/" className="text-2xl font-black tracking-tight">
+              Jumatech
+            </Link>
+            <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-[var(--badge-bg)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[var(--accent)]">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Secure account access
+            </span>
+          </div>
 
-        {/* Page content */}
-        {children}
-
-        {/* Footer */}
-        <div className="mt-6 text-center text-xs text-gray-400">
-          © {new Date().getFullYear()} Jumatech. All rights reserved.
+          {/* Page content */}
+          {children}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
