@@ -76,13 +76,20 @@ export const Header = () => {
 
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="max-w-40 truncate text-xs">{user.email}</span>
+              <Link
+                href="/account"
+                aria-label="My account"
+                className="flex items-center gap-2 transition hover:text-[var(--accent)]"
+              >
+                <User className="h-5 w-5" />
+                <span className="max-w-40 truncate text-xs">{user.email}</span>
+              </Link>
               <button onClick={logout} aria-label="Logout">
                 <LogOut className="h-5 w-5 text-red-600" />
               </button>
             </div>
           ) : (
-            <Link href="/login" aria-label="Login">
+            <Link href="/account" aria-label="Account">
               <User className="h-5 w-5 transition hover:text-[var(--accent)]" />
             </Link>
           )}

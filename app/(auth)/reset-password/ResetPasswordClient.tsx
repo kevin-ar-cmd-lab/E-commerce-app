@@ -53,7 +53,7 @@ export default function ResetPasswordClient() {
       )}
 
       <p className="text-sm text-center">
-        <Link href="/auth/login" className="text-blue-600">
+        <Link href="/login" className="text-blue-600">
           Back to sign in
         </Link>
       </p>
