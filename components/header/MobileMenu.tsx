@@ -61,11 +61,7 @@ export const MobileMenu = () => {
           </button>
           <Link href="/search" aria-label="Search"><Search /></Link>
           <Link href="/cart" aria-label="Cart"><ShoppingCart /></Link>
-          {user ? (
-            <button onClick={logout} aria-label="Logout"><LogOut className="text-red-600" /></button>
-          ) : (
-            <Link href="/login" aria-label="Login"><User /></Link>
-          )}
+          <Link href="/account" aria-label="Account"><User /></Link>
         </div>
       </div>
 
@@ -77,9 +73,10 @@ export const MobileMenu = () => {
           <Link href="/search" onClick={() => setOpen(false)}>Search</Link>
           <Link href="/about" onClick={() => setOpen(false)}>About</Link>
           <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
+          <Link href="/account" onClick={() => setOpen(false)}>{user ? "My account" : "Sign in / Register"}</Link>
           {user && (
-            <button onClick={logout} className="text-left text-red-600">
-              Logout
+            <button onClick={logout} className="flex items-center gap-2 text-left text-red-600">
+              <LogOut className="h-4 w-4" /> Logout
             </button>
           )}
         </div>
