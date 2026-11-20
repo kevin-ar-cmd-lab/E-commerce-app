@@ -10,7 +10,7 @@ const safeNext = (value: string | null) =>
   value && value.startsWith("/") && !value.startsWith("//") ? value : "/account";
 
 const inputClass =
-  "w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200";
+  "w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-color)] px-3 py-2.5 text-[var(--text-color)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/25";
 
 export default function LoginClient() {
   const router = useRouter();
@@ -52,21 +52,21 @@ export default function LoginClient() {
   const nextQuery = next !== "/account" ? `?next=${encodeURIComponent(next)}` : "";
 
   return (
-    <form onSubmit={handleLogin} className="flex flex-col gap-4 text-gray-900">
-      <h1 className="text-xl font-semibold">Sign in</h1>
+    <form onSubmit={handleLogin} className="flex flex-col gap-4">
+      <h1 className="text-2xl font-bold">Sign in</h1>
 
       {registered && (
-        <p className="rounded-lg bg-green-50 p-3 text-sm text-green-700">
+        <p className="rounded-xl border border-green-500/30 bg-green-500/10 p-3 text-sm text-green-600">
           Account created successfully. Check your inbox to confirm your email
           if required, then sign in.
         </p>
       )}
 
       {error && (
-        <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>
+        <p className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-500">{error}</p>
       )}
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="flex flex-col gap-1.5 text-sm font-medium">
         Email
         <input
           type="email"
@@ -78,7 +78,7 @@ export default function LoginClient() {
         />
       </label>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="flex flex-col gap-1.5 text-sm font-medium">
         Password
         <input
           type={showPassword ? "text" : "password"}
@@ -90,9 +90,10 @@ export default function LoginClient() {
         />
       </label>
 
-      <label className="flex items-center gap-2 text-sm text-gray-600">
+      <label className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
         <input
           type="checkbox"
+          className="h-4 w-4 accent-[var(--accent)]"
           checked={showPassword}
           onChange={() => setShowPassword(!showPassword)}
         />
@@ -102,18 +103,18 @@ export default function LoginClient() {
       <button
         type="submit"
         disabled={loading}
-        className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+        className="rounded-xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-60"
       >
         {loading ? "Signing in..." : "Sign in"}
       </button>
 
-      <Link href="/reset-password" className="text-center text-sm text-blue-600 hover:underline">
+      <Link href="/reset-password" className="text-center text-sm text-[var(--accent)] hover:underline">
         Forgot password?
       </Link>
 
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-[var(--text-muted)]">
         Don’t have an account?{" "}
-        <Link href={`/register${nextQuery}`} className="font-medium text-blue-600 hover:underline">
+        <Link href={`/register${nextQuery}`} className="font-medium text-[var(--accent)] hover:underline">
           Create one
         </Link>
       </p>

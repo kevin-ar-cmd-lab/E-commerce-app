@@ -8,8 +8,8 @@ export default function AuthSuspense({ children }: AuthSuspenseProps) {
   return (
     <Suspense
       fallback={
-        <div className="auth-card flex items-center justify-center">
-          <span className="text-sm text-gray-500">Loading authentication…</span>
+        <div className="flex items-center justify-center py-8">
+          <span className="text-sm text-[var(--text-muted)]">Loading authentication…</span>
         </div>
       }
     >
