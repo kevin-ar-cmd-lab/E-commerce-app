@@ -1,7 +1,12 @@
 import { ProductCard } from "@/components/product/ProductCard";
-import { catalogProducts } from "@/lib/catalog";
+import { getProducts } from "@/lib/products";
 
-export default function ProductsPage() {
+// Products come from Supabase on every request.
+export const dynamic = "force-dynamic";
+
+export default async function ProductsPage() {
+  const products = await getProducts();
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] p-6 sm:p-8">
@@ -11,17 +16,23 @@ export default function ProductsPage() {
         </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {catalogProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            price={product.price}
-            image={product.image}
-          />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <p className="mt-8 text-sm text-[var(--text-muted)]">
+          No products are available right now. Please check back soon.
+        </p>
+      ) : (
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              image={product.image}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 }

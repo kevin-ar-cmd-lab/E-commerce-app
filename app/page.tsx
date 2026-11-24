@@ -1,9 +1,10 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Sparkles, Star, Truck, Zap } from "lucide-react";
-import { catalogProducts } from "@/lib/catalog";
+import { getProducts } from "@/lib/products";
+
+// Products come from Supabase on every request.
+export const dynamic = "force-dynamic";
 
 const FEATURES = [
   {
@@ -41,7 +42,9 @@ const TESTIMONIALS = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = await getProducts();
+
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("en-KE", {
       style: "currency",
@@ -83,7 +86,7 @@ export default function HomePage() {
 
           <div className="w-full max-w-lg rounded-3xl border border-[var(--border-color)] bg-[var(--surface)] p-4 shadow-xl shadow-[var(--shadow-color)]/30">
             <div className="grid grid-cols-2 gap-4">
-              {catalogProducts.slice(0, 4).map((item) => (
+              {products.slice(0, 4).map((item) => (
                 <div key={item.id} className="rounded-xl border border-[var(--border-color)] bg-[var(--surface-muted)] p-3">
                   <Image
                     src={item.image}
@@ -109,7 +112,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {catalogProducts.map((product) => (
+          {products.map((product) => (
             <article
               key={product.id}
               className="group rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] p-4 transition hover:-translate-y-1 hover:shadow-lg hover:shadow-[var(--shadow-color)]/25"

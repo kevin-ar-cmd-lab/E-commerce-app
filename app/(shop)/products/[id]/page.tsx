@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductDetails } from "@/components/product/ProductDetails";
-import { catalogProducts } from "@/lib/catalog";
+import { getProduct } from "@/lib/products";
+
+// Products come from Supabase on every request.
+export const dynamic = "force-dynamic";
 
 export default async function ProductDetailsPage({
   params,
@@ -9,7 +12,7 @@ export default async function ProductDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const product = catalogProducts.find((item) => item.id === id);
+  const product = await getProduct(id);
 
   if (!product) {
     notFound();
