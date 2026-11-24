@@ -66,18 +66,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string,
     username: string
   ) => {
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: { data: { username } },
     });
     if (error) throw error;
-
-    if (data.user?.id) {
-      await supabase.from("profiles").insert({
-        id: data.user.id,
-        username,
-      });
-    }
+    // The profile row is created by a database trigger from this metadata.
   };
 
   const signOut = async () => {

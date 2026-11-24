@@ -49,13 +49,8 @@ export default function RegisterClient() {
       return;
     }
 
-    if (data.user) {
-      await supabase.from("profiles").upsert({
-        id: data.user.id,
-        full_name: fullName,
-        email,
-      });
-    }
+    // The profile row is created by a database trigger on sign-up (see
+    // supabase/align-with-existing-schema.sql), using full_name from above.
 
     setLoading(false);
 

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Button } from "../forms/Button";
+import { AddToCartButton } from "../cart/AddToCartButton";
 
 interface Props {
   id: string;
@@ -10,7 +10,7 @@ interface Props {
   image: string;
 }
 
-export const ProductDetails: FC<Props> = ({ name, price, description, image }) => {
+export const ProductDetails: FC<Props> = ({ id, name, price, description, image }) => {
   const formattedPrice = new Intl.NumberFormat("en-KE", {
     style: "currency",
     currency: "KES",
@@ -31,9 +31,7 @@ export const ProductDetails: FC<Props> = ({ name, price, description, image }) =
         <h1 className="text-3xl font-bold">{name}</h1>
         <p className="text-xl font-bold text-[var(--accent)]">{formattedPrice}</p>
         <p className="text-[var(--text-muted)]">{description}</p>
-        <div>
-          <Button>Add to Cart</Button>
-        </div>
+        <AddToCartButton product={{ id, name, price }} />
       </div>
     </div>
   );

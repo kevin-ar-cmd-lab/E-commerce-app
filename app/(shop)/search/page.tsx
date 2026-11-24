@@ -3,25 +3,41 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
-import { catalogProducts } from "@/lib/catalog";
+import { useEffect, useMemo, useState } from "react";
+import { getProducts, type StoreProduct } from "@/lib/products";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
+  const [allProducts, setAllProducts] = useState<StoreProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    getProducts().then((result) => {
+      if (!active) return;
+      setAllProducts(result);
+      setLoading(false);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const products = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     if (!normalized) {
-      return catalogProducts;
+      return allProducts;
     }
 
-    return catalogProducts.filter(
+    return allProducts.filter(
       (item) =>
         item.name.toLowerCase().includes(normalized) ||
-        item.category.toLowerCase().includes(normalized) ||
+        (item.category ?? "").toLowerCase().includes(normalized) ||
         item.description.toLowerCase().includes(normalized)
     );
-  }, [query]);
+  }, [query, allProducts]);
 
   return (
     <main className="mx-auto min-h-[70vh] w-full max-w-7xl px-4 py-10 sm:px-6">
@@ -43,7 +59,9 @@ export default function SearchPage() {
       </div>
 
       <p className="mt-6 text-sm text-[var(--text-muted)]">
-        Showing {products.length} result{products.length === 1 ? "" : "s"}
+        {loading
+          ? "Loading products..."
+          : `Showing ${products.length} result${products.length === 1 ? "" : "s"}`}
       </p>
 
       <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -77,7 +95,7 @@ export default function SearchPage() {
         })}
       </div>
 
-      {!products.length && (
+      {!loading && !products.length && (
         <div className="mt-8 rounded-2xl border border-dashed border-[var(--border-color)] bg-[var(--surface)] p-8 text-center">
           <p className="text-sm text-[var(--text-muted)]">No products matched this search. Try a different keyword.</p>
         </div>
